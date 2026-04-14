@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Clock3, ExternalLink, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock3, ExternalLink, MapPin, X } from "lucide-react";
 import type { ParishCalendarEvent } from "@/lib/calendar-feed";
+import CalendarListCard from "./CalendarListCard";
 
 type CalendarMonthViewProps = {
   events: ParishCalendarEvent[];
@@ -128,59 +129,42 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
   const currentMonth = useMemo(() => addMonths(baseMonth, monthOffset), [baseMonth, monthOffset]);
   const cells = useMemo(() => buildMonthCells(currentMonth, eventsByDate), [currentMonth, eventsByDate]);
 
-  const firstSelectableCell =
-    cells.find((cell) => cell.inMonth && cell.events.length > 0) ??
-    cells.find((cell) => cell.inMonth) ??
-    cells[0];
 
-  const [selectedDateKey, setSelectedDateKey] = useState(firstSelectableCell?.key ?? dateKey(baseMonth));
 
-  const selectedCell =
-    cells.find((cell) => cell.key === selectedDateKey) ??
-    firstSelectableCell;
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const [view, setView] = useState<"month" | "list">("month");
+
+  const selectedCell = selectedDateKey ? cells.find((cell) => cell.key === selectedDateKey) : null;
 
   const monthHasEvents = cells.some((cell) => cell.inMonth && cell.events.length > 0);
   const mobileSheetOpen = Boolean(selectedCell);
 
   function navigate(amount: number) {
-    const nextMonth = addMonths(baseMonth, monthOffset + amount);
-    const nextCells = buildMonthCells(nextMonth, eventsByDate);
-    const nextDefault =
-      nextCells.find((cell) => cell.inMonth && cell.events.length > 0) ??
-      nextCells.find((cell) => cell.inMonth) ??
-      nextCells[0];
-
     setMonthOffset((value) => value + amount);
-    if (nextDefault) {
-      setSelectedDateKey(nextDefault.key);
-    }
   }
 
   function jumpToToday() {
-    const todayMonth = startOfMonth(new Date());
-    const nextCells = buildMonthCells(todayMonth, eventsByDate);
-    const todayCell =
-      nextCells.find((cell) => cell.isToday) ??
-      nextCells.find((cell) => cell.inMonth && cell.events.length > 0) ??
-      nextCells.find((cell) => cell.inMonth) ??
-      nextCells[0];
-
     setMonthOffset(0);
-    if (todayCell) {
-      setSelectedDateKey(todayCell.key);
-    }
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
+    <div className="w-full">
       <div className="calendar-month-panel">
         <div className="calendar-app-bar">
           <div className="calendar-app-toolbar">
             <div className="calendar-segmented-control">
-              <a href="#upcoming-dates" className="calendar-segment">
+              <button
+                type="button"
+                onClick={() => setView("list")}
+                className={`calendar-segment ${view === "list" ? "calendar-segment-active" : ""}`}
+              >
                 List
-              </a>
-              <button type="button" className="calendar-segment calendar-segment-active">
+              </button>
+              <button
+                type="button"
+                onClick={() => setView("month")}
+                className={`calendar-segment ${view === "month" ? "calendar-segment-active" : ""}`}
+              >
                 Month
               </button>
             </div>
@@ -224,49 +208,70 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-7 gap-2 text-center">
-          {weekdayLabels.map((label) => (
-            <div key={label} className="calendar-weekday-label">
-              {label}
+        {view === "month" ? (
+          <>
+            <div className="mt-6 grid grid-cols-7 gap-2 text-center">
+              {weekdayLabels.map((label) => (
+                <div key={label} className="calendar-weekday-label">
+                  {label}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <div className="mt-3 grid grid-cols-7 gap-2">
-          {cells.map((cell) => {
-            const selected = selectedCell?.key === cell.key;
+            <div className="mt-3 grid grid-cols-7 gap-2">
+              {cells.map((cell) => {
+                const selected = selectedCell?.key === cell.key;
 
-            return (
-              <button
-                key={cell.key}
-                type="button"
-                onClick={() => setSelectedDateKey(cell.key)}
-                className={`calendar-date-cell ${cell.inMonth ? "calendar-date-cell-current" : "calendar-date-cell-outside"} ${selected ? "calendar-date-cell-selected" : ""} ${cell.isToday ? "calendar-date-cell-today" : ""}`.trim()}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className={`calendar-date-number ${cell.isToday ? "calendar-date-number-today" : ""}`.trim()}>
-                    {cell.date.getDate()}
-                  </span>
-                </div>
-                <div className="mt-2 space-y-1">
-                  {cell.events.slice(0, 2).map((event) => (
-                    <span key={event.id} className="calendar-date-entry" style={getEventTone(event.category)}>
-                      <span className="calendar-date-entry-time">{formatEventTime(event.start)}</span>
-                      <span className="truncate">{event.title}</span>
-                    </span>
-                  ))}
-                  {cell.events.length > 2 ? (
-                    <span className="calendar-date-more">+{cell.events.length - 2} more</span>
-                  ) : null}
-                  {cell.events.length === 0 ? <span className="calendar-date-empty">No events</span> : null}
-                </div>
-              </button>
-            );
-          })}
-        </div>
+                return (
+                  <button
+                    key={cell.key}
+                    type="button"
+                    onClick={() => setSelectedDateKey(cell.key)}
+                    className={`calendar-date-cell ${cell.inMonth ? "calendar-date-cell-current" : "calendar-date-cell-outside"} ${selected ? "calendar-date-cell-selected" : ""} ${cell.isToday ? "calendar-date-cell-today" : ""}`.trim()}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={`calendar-date-number ${cell.isToday ? "calendar-date-number-today" : ""}`.trim()}>
+                        {cell.date.getDate()}
+                      </span>
+                    </div>
+                    <div className="mt-2 space-y-1">
+                      {cell.events.slice(0, 2).map((event) => (
+                        <span key={event.id} className="calendar-date-entry" style={getEventTone(event.category)}>
+                          <span className="calendar-date-entry-time">{formatEventTime(event.start)}</span>
+                          <span className="truncate">{event.title}</span>
+                        </span>
+                      ))}
+                      {cell.events.length > 2 ? (
+                        <span className="calendar-date-more">+{cell.events.length - 2} more</span>
+                      ) : null}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className="mt-8">
+            <div className="grid gap-5 lg:grid-cols-2">
+              {cells
+                .filter((cell) => cell.inMonth)
+                .flatMap((cell) => cell.events)
+                .map((event) => (
+                  <CalendarListCard key={event.id} event={event} />
+                ))}
+            </div>
+            {cells.filter((cell) => cell.inMonth).flatMap((cell) => cell.events).length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-mutedForeground">No events found for this month.</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
-        <div className={`calendar-mobile-sheet ${mobileSheetOpen ? "calendar-mobile-sheet-open" : ""}`.trim()}>
-          <div className="calendar-mobile-sheet-header">
+      {selectedCell?.events.length ? (
+        <aside className="calendar-side-panel">
+          <div className="flex items-start justify-between gap-4">
             <div>
               <span className="calendar-kicker">Selected Day</span>
               <h3 className="mt-3 text-2xl font-display text-foreground">
@@ -275,82 +280,15 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
             </div>
             <button
               type="button"
-              onClick={() => setSelectedDateKey("")}
-              className="calendar-mobile-sheet-close"
-              aria-label="Close selected day details"
+              onClick={() => setSelectedDateKey(null)}
+              className="calendar-close-button"
+              aria-label="Close"
             >
-              Close
+              <X size={20} />
             </button>
           </div>
 
-          <p className="mt-3 text-sm leading-relaxed text-mutedForeground">
-            Tap another day in the month grid to update these parish service and meeting details.
-          </p>
 
-          {selectedCell?.events.length ? (
-            <div className="mt-5 space-y-4">
-              {selectedCell.events.map((event) => (
-                <div key={event.id} className="calendar-side-card">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="calendar-card-pill">{event.category}</span>
-                    <span className="text-[10px] uppercase tracking-[0.24em] text-mutedForeground">
-                      {formatEventTime(event.start)}
-                    </span>
-                  </div>
-
-                  <h4 className="mt-4 text-xl font-display text-foreground">{event.title}</h4>
-                  <p className="mt-2 text-sm leading-relaxed text-mutedForeground">{event.summary}</p>
-
-                  <div className="mt-4 space-y-2 text-sm text-mutedForeground">
-                    <div className="flex items-start gap-2">
-                      <Clock3 size={16} className="mt-0.5 shrink-0" />
-                      <span>
-                        {formatEventTime(event.start)}
-                        {event.end ? ` - ${formatEventTime(event.end)}` : ""}
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <MapPin size={16} className="mt-0.5 shrink-0" />
-                      <span>{event.location}</span>
-                    </div>
-                  </div>
-
-                  {event.htmlLink ? (
-                    <a
-                      href={event.htmlLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="calendar-inline-link mt-5 inline-flex items-center gap-2"
-                    >
-                      Open in Google Calendar
-                      <ExternalLink size={15} />
-                    </a>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="calendar-empty-panel mt-5">
-              <p className="text-sm leading-relaxed text-mutedForeground">
-                {monthHasEvents
-                  ? "There are no parish events recorded on this day. Choose another date in the month to see service or meeting details."
-                  : "There are no published parish events in this month yet. Move forward or back to explore other months."}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <aside className="calendar-side-panel">
-        <span className="calendar-kicker">Selected Day</span>
-        <h3 className="mt-3 text-2xl font-display text-foreground">
-          {selectedCell ? formatPanelDate(selectedCell.date) : "Choose a date"}
-        </h3>
-        <p className="mt-3 text-sm leading-relaxed text-mutedForeground">
-          Select any day in the month grid to review parish services and gatherings without leaving the calendar.
-        </p>
-
-        {selectedCell?.events.length ? (
           <div className="mt-6 space-y-4">
             {selectedCell.events.map((event) => (
               <div key={event.id} className="calendar-side-card">
@@ -392,16 +330,8 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="calendar-empty-panel mt-6">
-            <p className="text-sm leading-relaxed text-mutedForeground">
-              {monthHasEvents
-                ? "There are no parish events recorded on this day. Choose another date in the month to see service or meeting details."
-                : "There are no published parish events in this month yet. Move forward or back to explore other months."}
-            </p>
-          </div>
-        )}
-      </aside>
+        </aside>
+      ) : null}
     </div>
   );
 }

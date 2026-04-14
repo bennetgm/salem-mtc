@@ -163,9 +163,33 @@
   }
   .calendar-side-panel {
     @apply p-5 sm:p-7;
-    position: sticky;
-    top: 7rem;
-    align-self: start;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6), 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .calendar-close-button {
+    background: color-mix(in srgb, var(--surface) 96%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 92%, transparent);
+    color: var(--foreground);
+    border-radius: 999px;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .calendar-close-button:hover {
+    background: color-mix(in srgb, var(--surface) 80%, var(--foreground) 10%);
+    transform: scale(1.05);
   }
   .calendar-mobile-details {
     display: none;
@@ -319,10 +343,6 @@
   }
 
   @media (max-width: 1279px) {
-    .calendar-side-panel {
-      position: static;
-      top: auto;
-    }
   }
 
   @media (max-width: 767px) {
@@ -417,9 +437,6 @@
     .calendar-date-empty {
       font-size: 9px;
       letter-spacing: 0.12em;
-    }
-    .calendar-side-panel {
-      display: none;
     }
     .calendar-mobile-details {
       display: block;

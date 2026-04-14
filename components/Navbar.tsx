@@ -40,7 +40,7 @@ export default function Navbar() {
               <BrandLogo variant="shield" className="h-9 w-9 object-contain" alt="Salem Mar Thoma logo" />
             </div>
             <span className="font-display font-semibold text-foreground tracking-tight text-xs sm:text-sm leading-tight">
-              Salem Mar Thoma<br />
+              Salem Mar Thoma Church<br />
               <span className="text-[10px] sm:text-xs font-medium tracking-widest uppercase" style={{ color: "var(--gold)" }}>
                 Southampton
               </span>
