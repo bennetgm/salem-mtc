@@ -40,3 +40,7 @@ yarn-error.log*
 
 # OS
 Thumbs.db
+
+# generated local outputs
+build_output*.txt
+*.tsbuildinfo
