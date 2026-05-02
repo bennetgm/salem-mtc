@@ -259,6 +259,13 @@ export const galleryCollections = [
     cta: "Watch Videos"
   },
   {
+    title: "Sacred Spaces",
+    description: "A visual meditation on the beauty, light, and liturgical details of our sanctuary and place of worship.",
+    image: "/images/Church Photos/cc9b6c804fa93486d37b8987367c0464.jpg",
+    href: "/gallery",
+    cta: "View Interior"
+  },
+  {
     title: "Sevika Sangham Day Out",
     description: "Shared fellowship and community memories from a dedicated women’s gathering.",
     image: "/images/Front Page Thumbnails/9lgrNr4hSTCT1by73JzOjA.jpg",

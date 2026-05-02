@@ -1,0 +1,70 @@
+
+> salem-mar-thoma-church@1.0.0 build
+> next build
+
+   ▲ Next.js 15.5.14
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/bennet/Documents/Website/styles/globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+Failed to compile.
+
+./styles/globals.css:371:5
+Syntax error: /Users/bennet/Documents/Website/styles/globals.css The `bg-gold/10` class does not exist. If `bg-gold/10` is a custom class, make sure it is defined within a `@layer` directive.
+
+  369 | 
+  370 |   .eyebrow-chip {
+> 371 |     @apply inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] bg-gold/10 text-gold border border-gold/20 shadow-sm transition-all duration-300;
+      |     ^
+  372 |   }
+  373 |
+
+./styles/globals.css
+Syntax error: /Users/bennet/Documents/Website/styles/globals.css The `bg-gold/10` class does not exist. If `bg-gold/10` is a custom class, make sure it is defined within a `@layer` directive. (371:5)
+
+  369 | 
+  370 |   .eyebrow-chip {
+> 371 |     @apply inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] bg-gold/10 text-gold border border-gold/20 shadow-sm transition-all duration-300;
+      |     ^
+  372 |   }
+  373 | 
+
+    at tryRunOrWebpackError (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:316119)
+    at __webpack_require_module__ (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+    at __nested_webpack_require_161494__ (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+    at /Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+    at symbolIterator (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+    at done (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+    at Hook.eval [as callAsync] (eval at create (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:14:9224), <anonymous>:15:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:14:6378)
+    at /Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:130687
+    at symbolIterator (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/neo-async/async.js:1:14402)
+-- inner error --
+Syntax error: /Users/bennet/Documents/Website/styles/globals.css The `bg-gold/10` class does not exist. If `bg-gold/10` is a custom class, make sure it is defined within a `@layer` directive. (371:5)
+
+  369 | 
+  370 |   .eyebrow-chip {
+> 371 |     @apply inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] bg-gold/10 text-gold border border-gold/20 shadow-sm transition-all duration-300;
+      |     ^
+  372 |   }
+  373 | 
+
+    at Object.<anonymous> (/Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/bennet/Documents/Website/styles/globals.css:1:7)
+    at /Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:962717
+    at Hook.eval [as call] (eval at create (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:14:9002), <anonymous>:7:1)
+    at Hook.CALL_DELEGATE [as _call] (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:14:6272)
+    at /Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:131565
+    at tryRunOrWebpackError (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:316073)
+    at __webpack_require_module__ (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+    at __nested_webpack_require_161494__ (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+    at /Users/bennet/Documents/Website/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+    at symbolIterator (/Users/bennet/Documents/Website/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+
+Generated code for /Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/Users/bennet/Documents/Website/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/Users/bennet/Documents/Website/styles/globals.css
+
+Import trace for requested module:
+./styles/globals.css
+
+
+> Build failed because of webpack errors

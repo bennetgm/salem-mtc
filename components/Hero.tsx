@@ -10,7 +10,6 @@ type HeroProps = {
   title: string;
   body: string;
   image: string;
-  note: string;
 };
 
 const fadeUpParams = {
@@ -27,7 +26,7 @@ const staggerContainer = {
   }
 };
 
-export default function Hero({ eyebrow, title, body, image, note }: HeroProps) {
+export default function Hero({ eyebrow, title, body, image }: HeroProps) {
   return (
     <section className="shell hero-section">
       <div className="hero-grid">
@@ -63,29 +62,11 @@ export default function Hero({ eyebrow, title, body, image, note }: HeroProps) {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="hero-image-wrap"
+          className="hero-image-wrap aspect-[3/2] lg:aspect-[16/9]"
         >
           <div className="hero-image-shell">
             <Image src={image} alt="Salem Mar Thoma Church congregation" fill className="object-cover transition-transform duration-1000 hover:scale-105" priority />
           </div>
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="hero-floating-card hero-floating-card-top"
-          >
-            <p className="event-label mb-3">Parish Snapshot</p>
-            <h3 className="card-title text-sm">Faith, family, and fellowship across Southampton.</h3>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="hero-note glass-panel bg-[var(--bg-panel-strong)]"
-          >
-            <p className="eyebrow-chip mb-3 inline-flex">Southampton Parish Life</p>
-            <p className="section-copy !mt-0 text-sm">{note}</p>
-          </motion.div>
         </motion.div>
       </div>
     </section>

@@ -342,6 +342,82 @@
       inset 0 1px 0 color-mix(in srgb, white 35%, transparent);
   }
 
+  /* ─── Hero & Shell Layout ─── */
+  .shell {
+    @apply w-full max-w-[1800px] mx-auto px-6 lg:px-12;
+  }
+
+  .hero-section {
+    @apply pt-32 lg:pt-48 pb-20 lg:pb-32 overflow-hidden relative;
+  }
+
+  .hero-grid {
+    @apply grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center;
+  }
+
+  .hero-copy-panel {
+    @apply relative z-10;
+  }
+
+  .hero-copy-stack {
+    @apply flex flex-col items-start;
+  }
+
+  .hero-title {
+    @apply text-5xl lg:text-7xl font-display font-semibold tracking-tighter leading-[0.95] text-foreground;
+  }
+
+  .eyebrow-chip {
+    @apply inline-flex items-center rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] shadow-sm transition-all duration-300;
+    background: color-mix(in srgb, var(--gold) 10%, transparent);
+    color: var(--gold);
+    border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent);
+  }
+
+  .hero-image-wrap {
+    @apply relative w-full aspect-[4/5] lg:aspect-[1/1.2] rounded-[2.5rem] overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-lg;
+  }
+
+  .hero-image-shell {
+    @apply absolute inset-0;
+  }
+
+  .glass-panel {
+    @apply backdrop-blur-xl shadow-lg;
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    border: 1px solid color-mix(in srgb, var(--border) 10%, transparent);
+  }
+
+  .hero-floating-card {
+    @apply absolute top-8 -left-8 p-6 rounded-2xl hidden md:block max-w-[240px] z-20;
+    @apply glass-panel;
+  }
+
+  .hero-note {
+    @apply absolute bottom-8 -right-8 p-6 rounded-2xl hidden md:block max-w-[280px] z-20;
+    @apply glass-panel;
+  }
+
+  .event-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.26em] text-gold;
+  }
+
+  .hero-service-strip {
+    @apply mt-12 flex flex-wrap gap-4 pt-8 border-t w-full;
+    border-color: color-mix(in srgb, var(--border) 50%, transparent);
+  }
+
+  .hero-service-pill {
+    @apply px-4 py-2 rounded-full bg-surface border border-border text-xs font-medium text-muted-fg transition-all duration-300 hover:text-foreground;
+    &:hover {
+      border-color: color-mix(in srgb, var(--gold) 50%, transparent);
+    }
+  }
+
+  .button-secondary {
+    @apply px-6 py-3 rounded-lg font-semibold text-sm tracking-wide transition-all duration-300 border border-border bg-surface text-foreground hover:bg-muted;
+  }
+
   @media (max-width: 1279px) {
   }
 
