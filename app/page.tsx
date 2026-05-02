@@ -52,11 +52,6 @@ export default async function HomePage() {
           <div className="calendar-feature-card mx-auto max-w-7xl">
             <div className="flex items-center justify-between gap-4">
               <span className="calendar-kicker">Next in the parish</span>
-              {featured.source === "fallback" ? (
-                <span className="text-[10px] uppercase tracking-[0.24em] text-mutedForeground">
-                  Local fallback
-                </span>
-              ) : null}
             </div>
 
             <div className="mt-5 flex flex-wrap items-center gap-3">
@@ -69,11 +64,13 @@ export default async function HomePage() {
             <h2 className="mt-5 max-w-2xl text-3xl font-display leading-tight text-foreground sm:text-4xl">
               {featured.title}
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-mutedForeground">
-              {featured.summary}
-            </p>
+            {featured.summary ? (
+              <p className="mt-4 max-w-2xl whitespace-pre-line text-base leading-relaxed text-mutedForeground">
+                {featured.summary}
+              </p>
+            ) : null}
 
-            <div className="mt-7 grid gap-4 sm:grid-cols-3">
+            <div className={`mt-7 grid gap-4 ${featured.location ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
               <div className="calendar-detail-box">
                 <CalendarDays size={18} />
                 <div>
@@ -91,13 +88,15 @@ export default async function HomePage() {
                   </p>
                 </div>
               </div>
-              <div className="calendar-detail-box">
-                <MapPin size={18} />
-                <div>
-                  <p className="calendar-detail-label">Location</p>
-                  <p className="calendar-detail-value">{featured.location}</p>
+              {featured.location ? (
+                <div className="calendar-detail-box">
+                  <MapPin size={18} />
+                  <div>
+                    <p className="calendar-detail-label">Location</p>
+                    <p className="calendar-detail-value">{featured.location}</p>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
 
             <div className="mt-8 flex">

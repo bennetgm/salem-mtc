@@ -1,4 +1,4 @@
-import { calendar, eventFeed } from "@/lib/content";
+import { calendar } from "@/lib/content";
 
 export type ParishCalendarEvent = {
   id: string;
@@ -11,7 +11,7 @@ export type ParishCalendarEvent = {
   category: string;
   image?: string;
   htmlLink?: string;
-  source: "google-calendar" | "fallback";
+  source: "google-calendar";
 };
 
 function formatDateLabel(date: Date) {
@@ -38,16 +38,6 @@ function inferCategory(title: string) {
   return "Parish Event";
 }
 
-function cleanSummary(description: string) {
-  return description
-    .replace(/\r/g, "")
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .slice(0, 3)
-    .join(" ");
-}
-
 function parseGoogleApiEvents(items: Array<Record<string, unknown>>): ParishCalendarEvent[] {
   return items
     .map<ParishCalendarEvent | null>((item) => {
@@ -70,8 +60,8 @@ function parseGoogleApiEvents(items: Array<Record<string, unknown>>): ParishCale
       return {
         id,
         title,
-        summary: cleanSummary(description) || "See parish calendar for full event details.",
-        location: location || "Parish calendar",
+        summary: description.replace(/\r/g, "").trim(),
+        location: location.trim(),
         start: startDate.toISOString(),
         end: endDate?.toISOString(),
         dateLabel: formatDateLabel(startDate),
@@ -84,31 +74,10 @@ function parseGoogleApiEvents(items: Array<Record<string, unknown>>): ParishCale
     .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 }
 
-function fallbackEvents(): ParishCalendarEvent[] {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-
-  return eventFeed.map((event, index) => {
-    const syntheticDate = new Date(currentYear, now.getMonth(), Math.min(28, index * 3 + 3), 12, 0, 0);
-
-    return {
-      id: `fallback-${index}-${event.title}`,
-      title: event.title,
-      summary: event.summary,
-      location: event.location,
-      start: syntheticDate.toISOString(),
-      dateLabel: event.dateLabel,
-      category: inferCategory(event.title),
-      image: event.image,
-      source: "fallback" as const,
-    };
-  });
-}
-
 export async function getParishCalendarEvents() {
   const apiKey = process.env.GOOGLE_CALENDAR_API_KEY;
   if (!apiKey) {
-    return fallbackEvents();
+    return [];
   }
 
   const rangeStart = new Date();
@@ -142,18 +111,9 @@ export async function getParishCalendarEvents() {
     }
 
     const data = (await response.json()) as { items?: Array<Record<string, unknown>> };
-    if (!data.items?.length) {
-      throw new Error("Calendar API returned no items");
-    }
-
-    const parsed = parseGoogleApiEvents(data.items);
-    if (parsed.length === 0) {
-      throw new Error("Calendar feed contained no parseable events");
-    }
-
-    return parsed;
+    return parseGoogleApiEvents(data.items ?? []);
   } catch {
-    return fallbackEvents();
+    return [];
   }
 }
 

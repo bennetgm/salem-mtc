@@ -300,7 +300,9 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
                 </div>
 
                 <h4 className="mt-4 text-xl font-display text-foreground">{event.title}</h4>
-                <p className="mt-2 text-sm leading-relaxed text-mutedForeground">{event.summary}</p>
+                {event.summary ? (
+                  <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-mutedForeground">{event.summary}</p>
+                ) : null}
 
                 <div className="mt-4 space-y-2 text-sm text-mutedForeground">
                   <div className="flex items-start gap-2">
@@ -310,10 +312,12 @@ export default function CalendarMonthView({ events }: CalendarMonthViewProps) {
                       {event.end ? ` - ${formatEventTime(event.end)}` : ""}
                     </span>
                   </div>
-                  <div className="flex items-start gap-2">
-                    <MapPin size={16} className="mt-0.5 shrink-0" />
-                    <span>{event.location}</span>
-                  </div>
+                  {event.location ? (
+                    <div className="flex items-start gap-2">
+                      <MapPin size={16} className="mt-0.5 shrink-0" />
+                      <span>{event.location}</span>
+                    </div>
+                  ) : null}
                 </div>
 
                 {event.htmlLink ? (

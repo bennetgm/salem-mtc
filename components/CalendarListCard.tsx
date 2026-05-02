@@ -40,15 +40,12 @@ export default function CalendarListCard({ event }: { event: ParishCalendarEvent
         <div className="flex flex-1 flex-col p-6 md:p-7">
           <div className="flex flex-wrap items-center gap-3">
             <span className="calendar-card-pill">{event.category}</span>
-            {event.source === "fallback" ? (
-              <span className="text-[10px] uppercase tracking-[0.22em] text-mutedForeground">
-                Local fallback
-              </span>
-            ) : null}
           </div>
 
           <h3 className="mt-5 text-2xl font-display leading-tight text-foreground">{event.title}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-mutedForeground">{event.summary}</p>
+          {event.summary ? (
+            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-mutedForeground">{event.summary}</p>
+          ) : null}
 
           <div className="mt-6 space-y-3 text-sm text-mutedForeground">
             <div className="flex items-start gap-2">
@@ -67,10 +64,12 @@ export default function CalendarListCard({ event }: { event: ParishCalendarEvent
                 </span>
               </div>
             ) : null}
-            <div className="flex items-start gap-2">
-              <MapPin size={16} className="mt-0.5 shrink-0" />
-              <span>{event.location}</span>
-            </div>
+            {event.location ? (
+              <div className="flex items-start gap-2">
+                <MapPin size={16} className="mt-0.5 shrink-0" />
+                <span>{event.location}</span>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
